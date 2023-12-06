@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+          name="viewport">
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
+    <title>Nomina de jugadores</title>
+    <link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="container">
+
+    <h1>Programadores F.C.</h1>
+        <h3>Agrega una estrella al equipo</h3>
+    <br>
+
+    <div th:if="${jugadorMessage}" th:utext="${jugadorMessage}" class="alert alert-info"></div>
+
+    <br>
+
+    <form class="col p-3 mb-2 bg-light text-dark" method="post" th:action="@{/jugador}" th:object="${jugadorInfo}">
+
+        <div class="form-group">
+            <label for="nombre"> Nombre </label>
+            <input type="text" class="form-control form-control-lg" id="nombre" placeholder="Ingrese Nombre..." autocomplete="off" th:field="*{nombre}" required/>
+        </div>
+
+        <div class="form-group">
+            <label for="apellido"> Apellido </label>
+            <input type="text" class="form-control form-control-lg" id="apellido" placeholder="Ingrese Apellido..." autocomplete="off" th:field="*{apellido}" required/>
+        </div>
+
+        <div class="form-group">
+            <label for="nacionalidad"> Nacionalidad </label>
+            <input type="text" class="form-control form-control-lg" id="nacionalidad" placeholder="Ingrese Nacionalidad..." autocomplete="off" th:field="*{nacionalidad}" required/>
+        </div>
+
+        <div class="form-group">
+            <label for="numero_camiseta"> N° Camiseta </label>
+            <input type="number" class="form-control form-control-lg" id="numero_camiseta" min = "1" max = "30" placeholder="Ingrese el numero de la camiseta..." autocomplete="off" th:field="*{numeroCamiseta}" required/>
+        </div>
+
+        <div class="form-group">
+            <label for="posi">Posición</label>
+            <select class="form-control form-control-lg " id="posi" th:field="*{posi}" required>
+                <option hidden value="">Seleccione la posicion del jugador</option>
+                <option
+                        th:each="posi : ${T(cl.ciisa.evaluacion.voleibol.evaluacion3voleibol.modelo.entity.Posicion).values()}"
+                        th:text="${posi}"
+                        th:value="${posi}">
+                </option>
+            </select>
+        </div>
+
+        <div>
+            <input class="btn btn-success" type="submit" value="Agregar Jugador">
+            <input class="btn btn-warning" type="reset" value="Limpiar">
+        </div>
+
+    </form>
+
+    <br>
+
+    <table class="table table-striped table-dark table-bordered">
+
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Nacionalidad</th>
+            <th>N°Camiseta</th>
+            <th>Posicion</th>
+            <th>Fecha de ingreso</th>
+            <th>Fecha de actualizacion</th>
+            <th>Acciones</th>
+        </tr>
+
+        <tr th:if="${#lists.isEmpty(jugadores)}">
+            <td class="text-center" colspan="7">No se encontraron jugadores en el equipo. Agrega una estrella</td>
+        </tr>
+
+        <tr th:each="jugador : ${jugadores}">
+            <td class="align-middle" th:text="${jugador.id}"></td>
+            <td class="align-middle" th:text="${jugador.nombre}"></td>
+            <td class="align-middle" th:text="${jugador.apellido}"></td>
+            <td class="align-middle" th:text="${jugador.nacionalidad}"></td>
+            <td class="align-middle" th:text="${jugador.getNumeroCamiseta}"></td>
+            <td class="align-middle" th:text="${jugador.getPosi}"></td>
+            <td class="align-middle" th:text="${jugador.created}"></td>
+            <td class="align-middle" th:text="${jugador.updated}"></td>
+            <td class="align-middle text-center"><a class="btn btn-danger" th:href="'/jugador/' + ${jugador.id}">&#9998;</a></td>
+        </tr>
+
+    </table>
+</body>
+</html>
+
+
+
